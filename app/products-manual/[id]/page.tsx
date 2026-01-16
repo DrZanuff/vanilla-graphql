@@ -16,6 +16,7 @@ const GET_PRODUCT = gql`
       price
       category
       inStock
+      brand
     }
   }
 `
@@ -31,7 +32,6 @@ const TOGGLE_PRODUCT_STOCK = gql`
 
 export default function ProductManualPage() {
   const params = useParams()
-  const router = useRouter()
   const id = params.id as string
 
   // Using useQuery directly with manual typing
@@ -49,7 +49,10 @@ export default function ProductManualPage() {
     { id: string }
   >(TOGGLE_PRODUCT_STOCK, {
     variables: { id },
-    update(cache: ApolloCache, result: FetchResult<{ toggleProductStock: Product }>) {
+    update(
+      cache: ApolloCache,
+      result: FetchResult<{ toggleProductStock: Product }>
+    ) {
       const mutationData = result.data
       if (!mutationData) return
 
@@ -140,6 +143,11 @@ export default function ProductManualPage() {
               <p className="text-lg text-black dark:text-zinc-50">
                 {product.category}
               </p>
+              {product.brand && (
+                <p className="text-lg text-black dark:text-zinc-50">
+                  {product.brand}
+                </p>
+              )}
             </div>
 
             <div>
@@ -168,7 +176,7 @@ export default function ProductManualPage() {
 
           <button
             onClick={() => {
-              toggleStock({ variables: { id } })
+              toggleStock({ variables: { id: data.product?.id || id } })
             }}
             disabled={mutLoading}
             className="w-full sm:w-auto px-6 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black font-medium transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] disabled:opacity-50 disabled:cursor-not-allowed">
@@ -179,4 +187,3 @@ export default function ProductManualPage() {
     </div>
   )
 }
-
