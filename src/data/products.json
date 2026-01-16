@@ -4,7 +4,8 @@
     "name": "Laptop",
     "price": 999.99,
     "category": "Electronics",
-    "inStock": true
+    "inStock": false,
+    "brand": "Apple"
   },
   {
     "id": "2",

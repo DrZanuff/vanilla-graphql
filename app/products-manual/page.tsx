@@ -1,35 +1,53 @@
 'use client'
 
 import { useState } from 'react'
+import { useQuery } from '@apollo/client/react'
+import { gql } from '@apollo/client'
 import Link from 'next/link'
-// Import generated hook - fully typed based on GraphQL schema
-import { useProductsQuery } from '@/graphql/generated'
+import { Product } from '@/types/product'
 
-export default function ProductsPage() {
+// Manual GraphQL query using gql - no codegen
+const GET_PRODUCTS = gql`
+  query Products($inStock: Boolean) {
+    products(inStock: $inStock) {
+      id
+      name
+      price
+      category
+      inStock
+      brand
+    }
+  }
+`
+
+export default function ProductsManualPage() {
   const [filterInStock, setFilterInStock] = useState<boolean | undefined>(
     undefined
   )
 
-  // Use generated hook - no manual typing needed, types come from schema
-  const { data, loading, error } = useProductsQuery({
-    variables: { inStock: filterInStock },
-  })
+  // Using useQuery directly with manual typing
+  const { data, loading, error } = useQuery<{ products: Product[] }>(
+    GET_PRODUCTS,
+    {
+      variables: { inStock: filterInStock },
+    }
+  )
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-4">
           <Link
-            href="/products-manual"
+            href="/products"
             className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-50 transition-colors">
-            View Manual gql Version →
+            ← Back to Typed Products (Codegen)
           </Link>
         </div>
         <h1 className="text-3xl font-bold text-black dark:text-zinc-50 mb-2">
-          Products (Codegen)
+          Products (Manual gql)
         </h1>
         <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-8">
-          This page uses generated hooks from GraphQL Code Generator
+          This page uses manual gql queries instead of generated hooks
         </p>
 
         <div className="mb-6 flex gap-4">
@@ -84,7 +102,7 @@ export default function ProductsPage() {
               data.products.map((product) => (
                 <Link
                   key={product.id}
-                  href={`/products/${product.id}`}
+                  href={`/products-manual/${product.id}`}
                   className="block bg-white dark:bg-zinc-900 rounded-lg border border-black/[.08] dark:border-white/[.145] p-6 hover:shadow-lg transition-shadow">
                   <div className="flex justify-between items-start">
                     <div>
@@ -97,6 +115,11 @@ export default function ProductsPage() {
                       <p className="text-lg font-medium text-black dark:text-zinc-50">
                         ${product.price.toFixed(2)}
                       </p>
+                      {product.brand && (
+                        <p className="text-zinc-600 dark:text-zinc-400 mb-1">
+                          {product.brand}
+                        </p>
+                      )}
                     </div>
                     <div
                       className={`px-3 py-1 rounded-full text-sm font-medium ${

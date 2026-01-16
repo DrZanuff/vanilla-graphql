@@ -4,6 +4,7 @@ type Product {
   price: Float!
   category: String!
   inStock: Boolean!
+  brand: String
 }
 
 type Query {
@@ -14,4 +15,3 @@ type Query {
 type Mutation {
   toggleProductStock(id: ID!): Product!
 }
-

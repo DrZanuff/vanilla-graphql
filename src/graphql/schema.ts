@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from 'graphql-tag'
 
 export const typeDefs = gql`
   type Product {
@@ -7,6 +7,7 @@ export const typeDefs = gql`
     price: Float!
     category: String!
     inStock: Boolean!
+    brand: String
   }
 
   type Query {
@@ -17,5 +18,4 @@ export const typeDefs = gql`
   type Mutation {
     toggleProductStock(id: ID!): Product!
   }
-`;
-
+`
