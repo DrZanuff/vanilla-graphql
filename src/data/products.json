@@ -4,7 +4,7 @@
     "name": "Laptop",
     "price": 999.99,
     "category": "Electronics",
-    "inStock": false
+    "inStock": true
   },
   {
     "id": "2",

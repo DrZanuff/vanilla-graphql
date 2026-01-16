@@ -1,29 +1,19 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useQuery } from '@apollo/client/react';
-import { gql } from '@apollo/client';
-import Link from 'next/link';
-import { Product } from '@/types/product';
-
-const GET_PRODUCTS = gql`
-  query Products($inStock: Boolean) {
-    products(inStock: $inStock) {
-      id
-      name
-      price
-      category
-      inStock
-    }
-  }
-`;
+import { useState } from 'react'
+import Link from 'next/link'
+// Import generated hook - fully typed based on GraphQL schema
+import { useProductsQuery } from '@/graphql/generated'
 
 export default function ProductsPage() {
-  const [filterInStock, setFilterInStock] = useState<boolean | undefined>(undefined);
+  const [filterInStock, setFilterInStock] = useState<boolean | undefined>(
+    undefined
+  )
 
-  const { data, loading, error } = useQuery<{ products: Product[] }>(GET_PRODUCTS, {
+  // Use generated hook - no manual typing needed, types come from schema
+  const { data, loading, error } = useProductsQuery({
     variables: { inStock: filterInStock },
-  });
+  })
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-4 sm:px-6 lg:px-8">
@@ -39,8 +29,7 @@ export default function ProductsPage() {
               filterInStock === undefined
                 ? 'bg-black text-white dark:bg-white dark:text-black'
                 : 'border-black/[.08] dark:border-white/[.145] hover:bg-black/[.04] dark:hover:bg-[#1a1a1a]'
-            }`}
-          >
+            }`}>
             All
           </button>
           <button
@@ -49,8 +38,7 @@ export default function ProductsPage() {
               filterInStock === true
                 ? 'bg-black text-white dark:bg-white dark:text-black'
                 : 'border-black/[.08] dark:border-white/[.145] hover:bg-black/[.04] dark:hover:bg-[#1a1a1a]'
-            }`}
-          >
+            }`}>
             In Stock
           </button>
           <button
@@ -59,8 +47,7 @@ export default function ProductsPage() {
               filterInStock === false
                 ? 'bg-black text-white dark:bg-white dark:text-black'
                 : 'border-black/[.08] dark:border-white/[.145] hover:bg-black/[.04] dark:hover:bg-[#1a1a1a]'
-            }`}
-          >
+            }`}>
             Out of Stock
           </button>
         </div>
@@ -88,8 +75,7 @@ export default function ProductsPage() {
                 <Link
                   key={product.id}
                   href={`/products/${product.id}`}
-                  className="block bg-white dark:bg-zinc-900 rounded-lg border border-black/[.08] dark:border-white/[.145] p-6 hover:shadow-lg transition-shadow"
-                >
+                  className="block bg-white dark:bg-zinc-900 rounded-lg border border-black/[.08] dark:border-white/[.145] p-6 hover:shadow-lg transition-shadow">
                   <div className="flex justify-between items-start">
                     <div>
                       <h2 className="text-xl font-semibold text-black dark:text-zinc-50 mb-2">
@@ -107,8 +93,7 @@ export default function ProductsPage() {
                         product.inStock
                           ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                           : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-                      }`}
-                    >
+                      }`}>
                       {product.inStock ? 'In Stock' : 'Out of Stock'}
                     </div>
                   </div>
@@ -119,6 +104,5 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
-  );
+  )
 }
-

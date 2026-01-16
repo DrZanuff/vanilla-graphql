@@ -1,0 +1,10 @@
+query Products($inStock: Boolean) {
+  products(inStock: $inStock) {
+    id
+    name
+    price
+    category
+    inStock
+  }
+}
+

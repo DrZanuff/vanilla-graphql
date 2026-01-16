@@ -1,0 +1,7 @@
+mutation ToggleProductStock($id: ID!) {
+  toggleProductStock(id: $id) {
+    id
+    inStock
+  }
+}
+

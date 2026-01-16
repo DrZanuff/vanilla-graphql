@@ -1,56 +1,40 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
-import { useQuery, useMutation } from '@apollo/client/react'
-import { gql, ApolloCache } from '@apollo/client'
-import type { ApolloLink } from '@apollo/client/link'
-import { Product } from '@/types/product'
-
-const GET_PRODUCT = gql`
-  query Product($id: ID!) {
-    product(id: $id) {
-      id
-      name
-      price
-      category
-      inStock
-    }
-  }
-`
-
-const TOGGLE_PRODUCT_STOCK = gql`
-  mutation ToggleProductStock($id: ID!) {
-    toggleProductStock(id: $id) {
-      id
-      inStock
-    }
-  }
-`
+import type { ApolloCache } from '@apollo/client'
+import type { FetchResult } from '@apollo/client'
+// Import generated hooks and types - fully typed based on GraphQL schema
+import {
+  useProductQuery,
+  useToggleProductStockMutation,
+  ProductDocument,
+  type ToggleProductStockMutation,
+} from '@/graphql/generated'
 
 export default function ProductPage() {
   const params = useParams()
   const router = useRouter()
   const id = params.id as string
 
-  const { data, loading, error } = useQuery<{ product: Product }>(GET_PRODUCT, {
+  // Use generated hook - no manual typing needed
+  const { data, loading, error } = useProductQuery({
     variables: { id },
     skip: !id,
   })
 
-  const [toggleStock, { loading: mutLoading }] = useMutation<
-    { toggleProductStock: Product },
-    { id: string }
-  >(TOGGLE_PRODUCT_STOCK, {
+  // Use generated mutation hook - fully typed
+  const [toggleStock, { loading: mutLoading }] = useToggleProductStockMutation({
+    // Update function - using generated types
     update(
       cache: ApolloCache,
-      result: ApolloLink.Result<{ toggleProductStock: Product }>
+      result: FetchResult<ToggleProductStockMutation>
     ) {
       const mutationData = result.data
       if (!mutationData) return
 
-      // Update the product query in cache
+      // Update the product query in cache using generated document
       cache.writeQuery({
-        query: GET_PRODUCT,
+        query: ProductDocument,
         variables: { id },
         data: {
           product: {
