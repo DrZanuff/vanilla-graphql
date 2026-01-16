@@ -229,17 +229,6 @@ Data is persisted in `src/data/products.json`. The GraphQL resolvers:
 
 **Note**: In production/serverless environments, file system may be ephemeral. This is for learning/demo purposes.
 
-## 🎓 Learning Points
-
-This project demonstrates:
-
-1. **GraphQL API** inside Next.js App Router
-2. **Schema-driven development** with code generation
-3. **Type-safe GraphQL** queries and mutations
-4. **Apollo Client** integration patterns
-5. **Cache management** with Apollo
-6. **Two approaches** to GraphQL in React
-
 ## 🐛 Troubleshooting
 
 ### Codegen errors
