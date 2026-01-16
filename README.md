@@ -1,6 +1,6 @@
 # Next.js + GraphQL with Code Generation
 
-A Next.js project demonstrating GraphQL API integration with both **code-generated typed hooks** and **manual gql queries** for learning and interview preparation.
+A Next.js project demonstrating GraphQL API integration with both **code-generated typed hooks** and **manual gql queries**.
 
 ## 🎯 Features
 
